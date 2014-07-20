@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block title %}Images{% endblock %}
+{% block id %}{{ results.id }}{% endblock %}
+{% block content %}
+<ol class="breadcrumb">
+  <li><a href="/home">Home</a></li>
+  {%- if repo %}
+  <li><a href="/repo/{{ repo }}">{{ repo }}</a></li>
+  {%- endif %}
+  <li class="active">{{ results.id }}</li>
+</ol>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#summary" role="tab" data-toggle="tab">Summary</a></li>
+  <li><a href="#config" role="tab" data-toggle="tab">Config</a></li>
+  <li><a href="#files" role="tab" data-toggle="tab">Files ({{files|length}})</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="summary">
+  <ul>
+  <li><b>ID </b>: {{ results.id }}</li>
+  <li><b>Container </b>: {{ results.container }}</li>
+  <li><b>Parent </b>: <a href="/images/{{ results.parent }}">{{ results.parent }}</a></li>
+  <li><b>Created </b>: {{ results.created | datetimefilter }}</li>
+  <li><b>Author </b>: {{ results.author }}</li>
+  <li><b>OS </b>: {{ results.os }}</li>
+  <li><b>Architecture </b>: {{ results.architecture }}</li>
+  <li><b>Docker Version </b>: {{ results.docker_version }}</li>
+  {%- if results.Size %}
+  <li><b>Size </b>: {{ results.Size | filesizeformat }} ({{ results.Size }})</li>
+  {%- endif %}
+  <li><b>Files </b>: {{ files | length }}</li>
+  </ul>
+  </div>
+  <div class="tab-pane" id="config">
+    <ul>
+      {%- if results.config %}
+      <h3>Config</h3>
+      <ul>
+      {%- for key, value in results.config.iteritems() recursive %}
+      {%- if value is not none %}
+      <li></b>{{ key }}</b>
+        <br />
+        <pre>{{ value | joinifarray }}</pre>
+      </li>
+      {%- endif %}
+      {%- endfor %}
+      </ul>
+      {%- endif %}
+      {%- if results.container_config %}
+      <h3>Containner Config</h3>
+      <ul>
+      {%- for key, value in results.container_config.iteritems() recursive %}
+      {%- if value is not none %}
+      <li></b>{{ key }}</b>
+        <br />
+        <pre>{{ value | joinifarray }}</pre>
+      </li>
+      {%- endif %}
+      {%- endfor %}
+      </ul>
+      {%- endif %}
+  </div>
+  <div class="tab-pane" id="files">
+    <table class="table table-condensed table-striped">
+    <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Owner</th>
+    <th>Group</th>
+    <th>Mode</th>
+    <th>Mtime</th>
+    <th>Deleted</th>
+    </tr>
+    {%- for file in files %}
+    <tr>
+      <td><b>{{ file.name }}</b></td>
+      <td>{{file.type}}</td>
+      <td>{{file.size}}</td>
+      <td>{{file.owner}}</td>
+      <td>{{file.group}}</td>
+      <td>{{file.mode}}</td>
+      <td>{{file.mtime}}</td>
+      <td>{{file.deleted}}</td>
+    </tr>
+    {%- endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

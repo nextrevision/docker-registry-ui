@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block id %}No ID{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#repos" role="tab" data-toggle="tab">Repositories ({{results|length}})</a></li>
+  <li><a href="#images" role="tab" data-toggle="tab">Images</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="repos">
+    <ul>
+      {%- for key in results %}
+      <li></b><a href="/repo/{{ key.name.split('/')[1] }}">{{ key.name.split('/')[1] }}</a></b> ({{ key.name.split('/')[0] }}){%- if key.description %}: {{ key.description }}{%- endif %}</li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <div class="tab-pane" id="images">
+    <ul>
+    {%- for item in images %}
+    <li><b>{{ item.container }}</b></li>
+      {%- if item.images %}
+      <ul>
+      {%- for image in item.images %}
+        <li><a href='/images/{{ image.id }}'>{{ image.id }}</a></li>
+      {%- endfor %}
+      </ul>
+      {%- endif %}
+     {%- endfor %}
+     </ul>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

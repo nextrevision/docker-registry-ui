@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}Repository {{ name }}{% endblock %}
+{% block content %}
+<ol class="breadcrumb">
+  <li><a href="/home">Home</a></li>
+  <li class="active">{{ name }}</li>
+</ol>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#summary" role="tab" data-toggle="tab">Summary</a></li>
+  <li><a href="#images" role="tab" data-toggle="tab">Images ({{images|length}})</a></li>
+  <li><a href="#tags" role="tab" data-toggle="tab">Tags ({{tags|length}})</a></li>
+  <li><a href="#properties" role="tab" data-toggle="tab">Properties</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="summary">
+  <ul>
+  <li><b>Name </b>: {{ name }}</li>
+  <li><b>Access </b>: {{ properties.access }}</li>
+  <li><b>OS </b>: {{ results.os }}</li>
+  <li><b>Architecture </b>: {{ results.arch }}</li>
+  <li><b>Kernel </b>: {{ results.kernel }}</li>
+  <li><b>Docker Version </b>: {{ results.docker_version }}</li>
+  <li><b>Docker Go Version</b>: {{ results.docker_go_version }}</li>
+  <li><b>Last Update </b>: {{ results.last_update }}</li>
+  </ul>
+  </div>
+  <div class="tab-pane" id="images">
+    <ol>
+      {%- for image in images %}
+      <li><a href="/images/{{ image.id }}/{{ name }}">{{ image.id }}</a></li>
+      {%- endfor %}
+    </ol>
+  </div>
+  <div class="tab-pane" id="tags">
+    <ul>
+      {%- for tag in tags %}
+      <li>{{ tag }}</li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <div class="tab-pane" id="properties">
+    <ul>
+      {%- for key, value in properties.iteritems() %}
+      <li><b>{{ key }}</b>: {{ value }}</li>
+      {%- endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}
