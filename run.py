@@ -2,6 +2,7 @@ import urllib2
 import json
 import tarfile
 import re
+import os
 from datetime import datetime
 
 from flask import Flask
@@ -10,6 +11,12 @@ from flask import request
 
 app = Flask(__name__)
 app.debug = True
+
+registry_url = "localhost"
+if "REGURL" in os.environ:
+        registry_url = os.environ['REGURL']
+
+print "Registry reside on http://" + str(registry_url)  + "/v1" 
 
 FILE_TYPES = {
     'f':'file',
@@ -26,7 +33,7 @@ FILE_TYPES = {
 }
 
 def _query(path):
-    response = urllib2.urlopen("http://localhost/v1" + str(path))
+    response = urllib2.urlopen("http://" + str(registry_url)  + "/v1" + str(path))
     result = json.loads(response.read())
     return result
 
