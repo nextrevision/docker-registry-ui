@@ -22,3 +22,8 @@ docker run -p 8080:8080 -e REGURL="<registryIP/host>[:port]" docker-registry-ui
 ```
 
 `REGURL` default to "localhost"
+
+If your registry does not expose its port (for any reason you might have), you can still do :
+```
+docker run -p 8080:8080 --link myregistrycontainer:registry -e REGURL="registry:5000" docker-registry-ui
+```
