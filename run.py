@@ -90,7 +90,7 @@ def index():
         query = request.form['query']
     result = _query('/search?q=' + query)
     for repo in result['results']:
-        repo_images = _query("/repositories/%s/images" % repo['name'].replace('library/',''))
+        repo_images = _query("/repositories/%s/images" % repo['name'])
         images.append({'container': repo['name'], 'images': repo_images})
     return render_template('index.html', results=result['results'], images=images)
 
@@ -102,14 +102,14 @@ def images(image_id, repo_name=None):
     files = _build_file_dict(files_raw)
     return render_template('image.html', results=result, files=files, repo=repo_name)
 
-@app.route("/repo/<repo_name>")
-def repo(repo_name):
-    result = _query("/repositories/%s/json" % repo_name)
-    images = _query("/repositories/%s/images" % repo_name)
-    tags = _query("/repositories/%s/tags" % repo_name)
-    properties = _query("/repositories/%s/properties" % repo_name)
+@app.route("/repo/<repo_name>/<image_id>")
+def repo(repo_name, image_id):
+    result = _query("/repositories/%s/%s/json" % (repo_name,image_id))
+    images = _query("/repositories/%s/%s/images" % (repo_name,image_id))
+    tags = _query("/repositories/%s/%s/tags" % (repo_name,image_id))
+    properties = _query("/repositories/%s/%s/properties" % (repo_name,image_id))
     sorted_images = _build_image_tree(images)
-    return render_template('repo.html', name=repo_name,
+    return render_template('repo.html', name=repo_name+"/"+image_id,
         results=result, images=sorted_images, tags=tags, properties=properties)
 
 @app.template_filter()
