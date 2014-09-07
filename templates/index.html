@@ -10,7 +10,7 @@
   <div class="tab-pane active" id="repos">
     <ul>
       {%- for key in results %}
-      <li></b><a href="/repo/{{ key.name.split('/')[1] }}">{{ key.name.split('/')[1] }}</a></b> ({{ key.name.split('/')[0] }}){%- if key.description %}: {{ key.description }}{%- endif %}</li>
+      <li></b><a href="/repo/{{ key.name.split('/')[0] }}/{{ key.name.split('/')[1] }}">{{ key.name }}</a></b> ({{ key.name.split('/')[0] }}){%- if key.description %}: {{ key.description }}{%- endif %}</li>
       {%- endfor %}
     </ul>
   </div>
